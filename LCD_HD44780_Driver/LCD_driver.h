@@ -6,12 +6,17 @@
 #define BIT4_TRANSSMITION 0
 #define BIT8_TRANSSMISION 1
 
+#define CLEAR_CMD 0x01
+#define POS_CMD 0x80
+
 class LCD
 {
 public:
 	LCD(uint8_t RS, uint8_t Enable, uint8_t D4, uint8_t D5, uint8_t D6, uint8_t D7);
 	void SendString(char* msg);
 	void SendChar(uint8_t c);
+	void Clear();
+	void SetPos(uint8_t line, uint8_t pos);
 private:
 	void send4bits(uint8_t nibble, uint8_t rs);
 	void sendCmd(uint8_t cmd);
@@ -125,5 +130,22 @@ void LCD::SendString(char* msg)
 		msg++; 
 		delayMicroseconds(50);
 	}
+}
+
+void LCD::Clear()
+{
+	sendCmd(CLEAR_CMD);
+	delayMicroseconds(100);
+}
+
+void LCD::SetPos(uint8_t line, uint8_t pos)
+{
+	uint8_t bitPos = line & 0x02 ? pos + 0x20 : pos;
+
+	//Now to make command we need to add the addres to cmd number
+	bitPos = POS_CMD | (bitPos - 0x01);
+
+	sendCmd(bitPos);
+	delayMicroseconds(50); //wait at least 37us 
 }
 #endif

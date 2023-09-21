@@ -9,7 +9,7 @@ LCD cleared, cursor on, blinking on after init
 
 //Personalize according to your pins
 #define RS 3
-#define ENABLE 2
+#define ENABLE 8
 #define D4 4
 #define D5 5
 #define D6 6
@@ -19,7 +19,7 @@ LCD cleared, cursor on, blinking on after init
 #define WORD_LENGTH 16
 #define LCD_ROWS 2
 
-void SerialTransmission(uint baud);
+void SerialTransmission(int baud);
 
 void setup()
 {	
@@ -36,7 +36,7 @@ void loop()
 	delay(1000);
 }
 
-void SerialTransmission(uint baud)
+void SerialTransmission(int baud)
 {
 	Serial.begin(baud);
 	delay(1000);			//To make sure serial is ready to tx/rx 
